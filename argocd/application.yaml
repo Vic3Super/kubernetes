@@ -1,27 +1,24 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: ingress-nginx
+  name: my-app-dev
   namespace: argocd
 spec:
   project: default
 
   source:
-    repoURL: https://kubernetes.github.io/ingress-nginx
-    chart: ingress-nginx
-    targetRevision: 4.14.0
-    helm:
-      values: |
-        controller:
-          hostPort:
-            enabled: true
+    repoURL: https://github.com/your-user/your-repo.git
+    targetRevision: main
+    path: my-app/overlays/dev
+
   destination:
     server: https://kubernetes.default.svc
-    namespace: ingress-nginx
+    namespace: my-app
 
   syncPolicy:
     automated:
       prune: true
       selfHeal: true
+
     syncOptions:
       - CreateNamespace=true
